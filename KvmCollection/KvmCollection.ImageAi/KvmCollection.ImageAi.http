@@ -1,0 +1,6 @@
+@KvmCollection.ImageAi_HostAddress = http://localhost:5169
+
+GET {{KvmCollection.ImageAi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
