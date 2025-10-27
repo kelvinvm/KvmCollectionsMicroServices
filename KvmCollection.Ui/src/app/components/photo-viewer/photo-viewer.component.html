@@ -1,0 +1,53 @@
+<div class="photo-viewer-overlay" 
+     (click)="onClose()" 
+     (keydown)="onKeyDown($event)" 
+     tabindex="0"
+     #viewerOverlay>
+  <div class="photo-viewer-container" (click)="$event.stopPropagation()">
+    <!-- Back Button -->
+    <button class="back-button" (click)="onClose()" aria-label="Back to gallery">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Back to Album</span>
+    </button>
+
+    <!-- Previous Button -->
+    @if (hasPrevious()) {
+      <button class="nav-button nav-button-left" (click)="onPrevious()" aria-label="Previous photo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+    }
+
+    <!-- Photo -->
+    <div class="photo-content">
+      <img 
+        [src]="photo().url" 
+        [alt]="photo().title || 'Photo'"
+        class="photo-image"
+      />
+      @if (photo().title || photo().description) {
+        <div class="photo-info">
+          @if (photo().title) {
+            <h2 class="photo-title">{{ photo().title }}</h2>
+          }
+          @if (photo().description) {
+            <p class="photo-description">{{ photo().description }}</p>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Next Button -->
+    @if (hasNext()) {
+      <button class="nav-button nav-button-right" (click)="onNext()" aria-label="Next photo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    }
+  </div>
+</div>

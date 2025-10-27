@@ -26,6 +26,14 @@ public class AutofacModule : Autofac.Module
             .As<IImageManager>()
             .InstancePerDependency();
 
+        builder.RegisterType<AlbumManager>()
+            .As<IAlbumManager>()
+            .InstancePerDependency();
+
+        builder.RegisterType<WebImageManager>()
+            .As<IWebImageManager>()
+            .InstancePerDependency();
+
         builder.AddMediatRDependencies(_assemblies);
 
         builder.Register<ComputerVisionClient>(ctx =>

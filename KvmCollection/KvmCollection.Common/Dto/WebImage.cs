@@ -4,5 +4,5 @@ using System.Linq;
 
 namespace KvmCollection.Common.Dto;
 
-public record Image(byte[] ImageBytes, int Oid = -1) : IHaveXpoOid;
+public record WebImage(string Name, string Url, int Oid = -1) : IHaveXpoOid;
 

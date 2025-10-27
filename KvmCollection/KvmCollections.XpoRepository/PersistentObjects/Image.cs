@@ -33,21 +33,30 @@ public class Image : XPObject
         }
     }
 
-    [Association("Images-ImageTags")]
-    public XPCollection<ImageTag> Tag
-    {
-        get
-        {
-            return GetCollection<ImageTag>(nameof(Tag));
-        }
-    }
-
     [Association("ImageTag-Image")]
     public XPCollection<ImageTag> ImageTag
     {
         get
         {
             return GetCollection<ImageTag>(nameof(ImageTag));
+        }
+    }
+
+    [Association("Album-Images")]
+    public XPCollection<Album> Album
+    {
+        get
+        {
+            return GetCollection<Album>(nameof(Album));
+        }
+    }
+
+    [Association("WebImage-Image")]
+    public XPCollection<Image> WebImage
+    {
+        get
+        {
+            return GetCollection<Image>(nameof(WebImage));
         }
     }
 }

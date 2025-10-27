@@ -1,0 +1,81 @@
+<div class="edit-album-container">
+  <h2>Edit Album</h2>
+
+  @if (isLoading()) {
+    <div class="loading">Loading album...</div>
+  } @else {
+    <form [formGroup]="albumForm" (ngSubmit)="onSubmit()" class="album-form">
+      @if (errorMessage()) {
+        <div class="error-message">{{ errorMessage() }}</div>
+      }
+
+      @if (successMessage()) {
+        <div class="success-message">{{ successMessage() }}</div>
+      }
+
+      <div class="form-group">
+        <label for="name">Album Name *</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          placeholder="Enter album name"
+          [class.invalid]="albumForm.get('name')?.invalid && albumForm.get('name')?.touched"
+        />
+        @if (albumForm.get('name')?.invalid && albumForm.get('name')?.touched) {
+          <div class="error-text">Album name must be at least 3 characters</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="subtitle">Subtitle *</label>
+        <input
+          type="text"
+          id="subtitle"
+          formControlName="subtitle"
+          placeholder="e.g., October 2025"
+          [class.invalid]="albumForm.get('subtitle')?.invalid && albumForm.get('subtitle')?.touched"
+        />
+        @if (albumForm.get('subtitle')?.invalid && albumForm.get('subtitle')?.touched) {
+          <div class="error-text">Subtitle is required</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="thumbnail">Album Thumbnail (400x300px recommended)</label>
+        <div class="file-input-container">
+          <input
+            type="file"
+            id="thumbnail"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            #fileInput
+          />
+          <button type="button" class="btn btn-secondary" (click)="fileInput.click()">
+            Choose New Thumbnail
+          </button>
+          @if (selectedFile()) {
+            <span class="file-name">{{ selectedFile()!.name }}</span>
+            <button type="button" class="btn btn-remove" (click)="removeFile()">Remove</button>
+          }
+        </div>
+
+        @if (previewUrl()) {
+          <div class="preview">
+            <img [src]="previewUrl()" alt="Thumbnail preview" />
+            <p class="preview-label">Current thumbnail</p>
+          </div>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-cancel" (click)="cancel()" [disabled]="isSubmitting()">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="albumForm.invalid || isSubmitting()">
+          {{ isSubmitting() ? 'Updating...' : 'Update Album' }}
+        </button>
+      </div>
+    </form>
+  }
+</div>

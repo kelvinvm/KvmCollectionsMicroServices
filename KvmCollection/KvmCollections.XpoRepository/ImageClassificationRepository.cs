@@ -14,7 +14,7 @@ public class ImageClassificationRepository : DataRepositoryBase<Dto.ImageClassif
     // Create
     protected override Xpo.Image MapToXpo(ImageClassification dto, Session session)
     {
-        var xpoImage = new Xpo.Image() { ImageData = dto.Image };
+        var xpoImage = new Xpo.Image(session) { ImageData = dto.Image };
 
         foreach (var category in dto.Categories)
         {
@@ -31,7 +31,7 @@ public class ImageClassificationRepository : DataRepositoryBase<Dto.ImageClassif
                 Tag = xpoTag,
                 Confidence = tag.Confidence
             };
-            xpoImage.Tag.Add(xpoImageTag);
+            xpoImage.ImageTag.Add(xpoImageTag);
         }
         return xpoImage;
     }
@@ -50,7 +50,7 @@ public class ImageClassificationRepository : DataRepositoryBase<Dto.ImageClassif
         );
 
         // Update Tags
-        xpo.Tag.SyncCollection(
+        xpo.ImageTag.SyncCollection(
             dtoItems: dto.Tags,
             keySelector: imageTag => imageTag.Tag.Description,
             dtoKeySelector: tag => tag.Name,
@@ -74,7 +74,7 @@ public class ImageClassificationRepository : DataRepositoryBase<Dto.ImageClassif
             Image: xpo.ImageData,
             Description: xpo.Description,
             Categories: xpo.Category.Select(c => c.Description).ToList(),
-            Tags: xpo.Tag.Select(t => new TagInfo(t.Tag.Description, t.Confidence, t.Oid)).ToList(),
+            Tags: xpo.ImageTag.Select(t => new TagInfo(t.Tag.Description, t.Confidence, t.Oid)).ToList(),
             AnalyzedSize: System.Drawing.Size.Empty,
             OriginalSize: System.Drawing.Size.Empty,
             Oid: xpo.Oid

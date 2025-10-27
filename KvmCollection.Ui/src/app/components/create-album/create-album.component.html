@@ -1,0 +1,95 @@
+<div class="create-album-container">
+  <div class="form-card">
+    <h1>Create New Album</h1>
+    <p class="subtitle">Add a new album to your collection</p>
+
+    <form [formGroup]="albumForm" (ngSubmit)="onSubmit()" class="album-form">
+      <!-- Album Name -->
+      <div class="form-group">
+        <label for="name">Album Name *</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          placeholder="Enter album name"
+        />
+        @if (getFieldError('name')) {
+          <span class="field-error">{{ getFieldError('name') }}</span>
+        }
+      </div>
+
+      <!-- Subtitle -->
+      <div class="form-group">
+        <label for="subtitle">Subtitle *</label>
+        <input
+          type="text"
+          id="subtitle"
+          formControlName="subtitle"
+          placeholder="e.g., October 2025"
+        />
+        @if (getFieldError('subtitle')) {
+          <span class="field-error">{{ getFieldError('subtitle') }}</span>
+        }
+      </div>
+
+      <!-- Thumbnail Upload -->
+      <div class="form-group">
+        <label for="thumbnail">Album Thumbnail *</label>
+        <div class="file-upload-area">
+          @if (!previewUrl()) {
+            <label for="thumbnail" class="file-upload-label">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span class="upload-text">Click to upload image</span>
+              <span class="upload-hint">PNG, JPG up to 5MB</span>
+            </label>
+          } @else {
+            <div class="preview-container">
+              <img [src]="previewUrl()" alt="Thumbnail preview" class="preview-image" />
+              <button type="button" class="remove-button" (click)="removeFile()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          }
+          <input
+            type="file"
+            id="thumbnail"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            class="file-input"
+          />
+        </div>
+      </div>
+
+      <!-- Messages -->
+      @if (successMessage()) {
+        <div class="success-message">
+          {{ successMessage() }}
+        </div>
+      }
+
+      @if (errorMessage()) {
+        <div class="error-message">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <!-- Submit Button -->
+      <div class="form-actions">
+        <button type="submit" class="submit-button" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <span>Creating...</span>
+          } @else {
+            <span>Create Album</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

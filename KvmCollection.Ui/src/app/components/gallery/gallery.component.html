@@ -1,0 +1,38 @@
+<div class="gallery-container">
+  <header class="gallery-header">
+    <h1>{{ currentAlbum()?.name || 'Photo Gallery' }}</h1>
+    <p class="photo-count">{{ photos().length }} photos</p>
+  </header>
+
+  <div class="gallery-grid">
+    @for (photo of photos(); track photo.oid) {
+      <div class="photo-card" (click)="openPhoto(photo)">
+        <img 
+          [src]="photo.thumbnailUrl" 
+          [alt]="photo.title || 'Photo'"
+          class="photo-image"
+        />
+        @if (photo.title) {
+          <div class="photo-overlay">
+            <span class="photo-title">{{ photo.title }}</span>
+          </div>
+        }
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <p>No photos in this album yet.</p>
+      </div>
+    }
+  </div>
+</div>
+
+@if (selectedPhoto()) {
+  <app-photo-viewer 
+    [photo]="selectedPhoto()!"
+    [hasNext]="hasNext()"
+    [hasPrevious]="hasPrevious()"
+    (close)="closeViewer()"
+    (next)="showNext()"
+    (previous)="showPrevious()"
+  />
+}

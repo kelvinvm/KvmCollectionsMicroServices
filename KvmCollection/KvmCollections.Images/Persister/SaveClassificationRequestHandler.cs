@@ -25,4 +25,3 @@ internal class SaveClassificationRequestHandler : IRequestHandler<SaveClassifica
         return savedItem;
     }
 }
-    

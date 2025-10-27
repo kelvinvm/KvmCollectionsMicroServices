@@ -1,0 +1,48 @@
+<div class="albums-list-container">
+  <div class="header">
+    <h2>Manage Albums</h2>
+    <a routerLink="/admin/create-album" class="btn btn-primary">Create New Album</a>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="error-message">{{ errorMessage() }}</div>
+  }
+
+  @if (isLoading()) {
+    <div class="loading">Loading albums...</div>
+  } @else if (albums().length === 0) {
+    <div class="empty-state">
+      <p>No albums found.</p>
+      <a routerLink="/admin/create-album" class="btn btn-primary">Create Your First Album</a>
+    </div>
+  } @else {
+    <div class="albums-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Thumbnail</th>
+            <th>Name</th>
+            <th>Subtitle</th>
+            <th>Photos</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (album of albums(); track album.oid) {
+            <tr>
+              <td class="thumbnail-cell">
+                <img [src]="getThumbnailUrl(album.thumbnailUrl)" [alt]="album.name" />
+              </td>
+              <td>{{ album.name }}</td>
+              <td>{{ album.subtitle }}</td>
+              <td>{{ album.photoCount }} photos</td>
+              <td class="actions-cell">
+                <a [routerLink]="['/admin/albums/edit', album.oid]" class="btn btn-edit">Edit</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

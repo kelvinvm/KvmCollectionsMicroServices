@@ -11,6 +11,18 @@ XpoDefault.DataLayer = XpoDefault.GetDataLayer(connectionString, AutoCreateOptio
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") // Your Angular dev server
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
+    });
+});
+
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 var autofacModule = new AutofacModule(new[]
 {
@@ -27,10 +39,15 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+// Use CORS before other middleware
+app.UseCors("AllowAngularApp");
+
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
+
+// Enable static files to serve images
+app.UseStaticFiles();
+app.MapStaticAssets().ShortCircuit();
 
 app.Run();

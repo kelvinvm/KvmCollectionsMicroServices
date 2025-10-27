@@ -13,5 +13,13 @@ public class RepositoryRegistrations : Module
         builder.RegisterType<ImageClassificationRepository>()
             .As<IDataRepository<ImageClassification>>()
             .InstancePerDependency();
+
+        builder.RegisterType<AlbumRepository>()
+            .As<IDataRepository<Album>>()
+            .InstancePerDependency();
+
+        builder.RegisterType<WebImageRepository>()
+            .As<IDataRepository<WebImage>>()
+            .InstancePerDependency();
     }
 }

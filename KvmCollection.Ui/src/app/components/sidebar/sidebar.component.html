@@ -1,0 +1,41 @@
+<!-- Hamburger Menu Button (Mobile Only) -->
+<button class="hamburger-button" (click)="toggleMenu()" [class.open]="isMenuOpen()" aria-label="Toggle menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<!-- Overlay (Mobile Only) -->
+@if (isMenuOpen()) {
+  <div class="sidebar-overlay" (click)="closeMenu()"></div>
+}
+
+<!-- Sidebar -->
+<aside class="sidebar" [class.open]="isMenuOpen()">
+  <div class="sidebar-header">
+    <h2>Albums</h2>
+    <button class="close-button" (click)="closeMenu()" aria-label="Close menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+  <nav class="album-list">
+    @for (album of albums(); track album.oid) {
+      <button
+        class="album-item"
+        [class.active]="currentAlbum()?.oid === album.oid"
+        (click)="selectAlbum(album.oid)"
+      >
+        <div class="album-thumbnail">
+          <img [src]="album.thumbnailUrl" [alt]="album.name" />
+        </div>
+        <div class="album-info">
+          <span class="album-name">{{ album.name }}</span>
+          <span class="album-date">{{ album.subtitle }}</span>
+        </div>
+      </button>
+    }
+  </nav>
+</aside>
